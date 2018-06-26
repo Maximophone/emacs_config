@@ -15,7 +15,9 @@
 (straight-use-package 'auto-complete)
 (straight-use-package 'elpy)
 (straight-use-package 'yasnippet)
-(straight-use-package 'ace-windows)
+(straight-use-package 'ace-window)
+(straight-use-package 'go-mode)
+(straight-use-package 'go-autocomplete)
 
 ;; THEME
 (load-theme 'spolsky)
@@ -29,6 +31,10 @@
       python-shell-interpreter-args "-i --simple-prompt")
 (global-linum-mode t)
 (tool-bar-mode -1)
+
+(global-set-key (kbd "M-o") 'ace-window)
+
+(toggle-truncate-lines t)
 
 ;; ORG MODE
 (define-key global-map "\C-ca" 'org-agenda)
@@ -50,21 +56,21 @@
 
 ;; (when window-system (set-exec-path-from-shell-PATH))
 
-;; (setenv "GOPATH" "/home/max/go")
+(setenv "GOPATH" "/home/max/go")
 
-;; (add-to-list 'exec-path "/home/max/go/gocode/bin")
+(add-to-list 'exec-path "/home/max/go/gocode/bin")
 
-;; (defun my-go-mode-hook ()
-;;   ; Call Gofmt before saving                                                    
-;;   (add-hook 'before-save-hook 'gofmt-before-save)
-;;   ; Godef jump key binding                                                      
-;;   (local-set-key (kbd "M-.") 'godef-jump)
-;;   (local-set-key (kbd "M-*") 'pop-tag-mark)
-;;   )
-;; (add-hook 'go-mode-hook 'my-go-mode-hook)
+(defun my-go-mode-hook ()
+  ; Call Gofmt before saving                                                    
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  ; Godef jump key binding                                                      
+  (local-set-key (kbd "M-.") 'godef-jump)
+  (local-set-key (kbd "M-*") 'pop-tag-mark)
+  )
+(add-hook 'go-mode-hook 'my-go-mode-hook)
 
-;; (defun auto-complete-for-go ()
-;;   (auto-complete-mode 1))
-;; (add-hook 'go-mode-hook 'auto-complete-for-go)
+(defun auto-complete-for-go ()
+  (auto-complete-mode 1))
+(add-hook 'go-mode-hook 'auto-complete-for-go)
 
 ;; (require 'go-autocomplete)
