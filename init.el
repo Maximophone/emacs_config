@@ -14,10 +14,14 @@
 (straight-use-package 'sublime-themes)
 (straight-use-package 'auto-complete)
 (straight-use-package 'elpy)
+(straight-use-package 'jedi)
 (straight-use-package 'yasnippet)
+(straight-use-package 'yasnippet-snippets)
+(straight-use-package 'yaml-mode)
 (straight-use-package 'ace-window)
 (straight-use-package 'go-mode)
 (straight-use-package 'go-autocomplete)
+(straight-use-package 'glsl-mode)
 
 ;; THEME
 (load-theme 'spolsky)
@@ -27,14 +31,21 @@
 (ido-mode t)
 (global-auto-complete-mode t)
 (elpy-enable)
-(setq python-shell-interpreter "ipython"
-      python-shell-interpreter-args "-i --simple-prompt")
+(setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-prompt-detect-failure-warning nil)
+(add-to-list 'python-shell-completion-native-disabled-interpreters
+	     "jupyter")
 (global-linum-mode t)
 (tool-bar-mode -1)
-
-(global-set-key (kbd "M-o") 'ace-window)
-
 (toggle-truncate-lines t)
+
+(setq elpy-rpc-backend "jedi")
+
+;; BINDINGS
+(global-set-key (kbd "M-o") 'ace-window)
+(global-set-key "\M-n" (lambda() (interactive) (scroll-up 4)))
+(global-set-key "\M-p" (lambda() (interactive) (scroll-down 4)))
 
 ;; ORG MODE
 (define-key global-map "\C-ca" 'org-agenda)
@@ -44,22 +55,12 @@
 	("POSTPONED" . "blue")
 	("ABANDONED" . "darkgreen")))
 (setq org-agenda-window-setup 'current-window)
+(org-toggle-sticky-agenda t)
+(add-hook 'org-mode-hook 'yas-minor-mode)
 
-;; (defun set-exec-path-from-shell-PATH ()
-;;   (let ((path-from-shell (replace-regexp-in-string
-;;                           "[ \t\n]*$"
-;;                           ""
-;;                           (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-;;     (setenv "PATH" path-from-shell)
-;;     (setq eshell-path-env path-from-shell) ; for eshell users
-;;     (setq exec-path (split-string path-from-shell path-separator))))
-
-;; (when window-system (set-exec-path-from-shell-PATH))
-
-(setenv "GOPATH" "/home/max/go")
-
-(add-to-list 'exec-path "/home/max/go/gocode/bin")
-
+;; GO
+(setenv "GOPATH" "~/go")
+(add-to-list 'exec-path "~/go/gocode/bin")
 (defun my-go-mode-hook ()
   ; Call Gofmt before saving                                                    
   (add-hook 'before-save-hook 'gofmt-before-save)
@@ -73,4 +74,6 @@
   (auto-complete-mode 1))
 (add-hook 'go-mode-hook 'auto-complete-for-go)
 
-;; (require 'go-autocomplete)
+;; STARTUP
+(setq inhibit-startup-screen t)
+(find-file "~/worknotes.org")
