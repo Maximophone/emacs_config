@@ -59,8 +59,8 @@
 (add-hook 'org-mode-hook 'yas-minor-mode)
 
 ;; GO
-(setenv "GOPATH" "~/go")
-(add-to-list 'exec-path "~/go/gocode/bin")
+(setenv "GOPATH" "/home/max/go")
+(add-to-list 'exec-path "/home/max/go/bin")
 (defun my-go-mode-hook ()
   ; Call Gofmt before saving                                                    
   (add-hook 'before-save-hook 'gofmt-before-save)
@@ -74,6 +74,11 @@
   (auto-complete-mode 1))
 (add-hook 'go-mode-hook 'auto-complete-for-go)
 
+(with-eval-after-load 'go-mode
+   (require 'go-autocomplete))
+
 ;; STARTUP
 (setq inhibit-startup-screen t)
 (find-file "~/worknotes.org")
+
+(desktop-save-mode 1)
