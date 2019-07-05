@@ -16,6 +16,7 @@
 (straight-use-package 'elpy)
 (straight-use-package 'jedi)
 (straight-use-package 'pylint)
+(straight-use-package 'flycheck)
 (straight-use-package 'yasnippet)
 (straight-use-package 'yasnippet-snippets)
 (straight-use-package 'yaml-mode)
@@ -23,6 +24,9 @@
 (straight-use-package 'go-mode)
 (straight-use-package 'go-autocomplete)
 (straight-use-package 'glsl-mode)
+(straight-use-package 'fill-column-indicator)
+(straight-use-package 'nov)
+(straight-use-package 'kotlin-mode)
 (straight-use-package 'rust-mode)
 
 ;; THEME
@@ -36,13 +40,24 @@
 (setq python-shell-interpreter "jupyter"
       python-shell-interpreter-args "console --simple-prompt"
       python-shell-prompt-detect-failure-warning nil)
-;;(add-to-list 'python-shell-completion-native-disabled-interpreters
-;;	     "jupyter")
+(add-to-list 'python-shell-completion-native-disabled-interpreters
+             "jupyter")
+
 (global-linum-mode t)
 (tool-bar-mode -1)
 (toggle-truncate-lines t)
 
 (setq elpy-rpc-backend "jedi")
+
+(add-hook 'python-mode-hook #'flycheck-mode)
+(setq fci-rule-column 120)
+(add-hook 'python-mode-hook (lambda ()
+			      (fci-mode 1)
+			      ))
+
+(remove-hook 'elpy-modules 'elpy-module-flymake)
+
+(setq reb-re-syntax 'string) ;; Switching re-builder syntax to "string"
 
 ;; BINDINGS
 (global-set-key (kbd "M-o") 'ace-window)
@@ -79,8 +94,12 @@
 (with-eval-after-load 'go-mode
    (require 'go-autocomplete))
 
+
+;; FONT SIZE
+(set-face-attribute 'default nil :height 140)
+
 ;; STARTUP
 (setq inhibit-startup-screen t)
-(find-file "~/worknotes.org")
+(find-file "~/orgmode/worknotes.org")
 
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
